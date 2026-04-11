@@ -1,12 +1,23 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  app:
-    image: node:18
-    container_name: part2_app
+  web-part2:
+    image: node:18-alpine
+    container_name: webapp_part2
     working_dir: /app
-    volumes:
-      - ./:/app
+    command: sh -c "npm install && node app.js"
     ports:
-      - "5001:3000"
-    command: sh -c "npm install && npm start"
+      - "8081:3000"                        # different port from Part I
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - SESSION_SECRET=supersecretkey123
+      - DB_PATH=/app/data/job_portal.db
+    volumes:
+      - .:/app                             # code volume — Jenkins workspace
+      - /app/node_modules                  # anonymous volume to protect node_modules
+      - sqlite_data_part2:/app/data        # persistent DB volume
+    restart: unless-stopped
+
+volumes:
+  sqlite_data_part2:
