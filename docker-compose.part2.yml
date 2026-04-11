@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  app:
+    image: node:18
+    container_name: part2_app
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "5000:4000"
+    command: sh -c "npm install && npm start"
