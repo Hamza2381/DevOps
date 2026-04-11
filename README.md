@@ -87,6 +87,7 @@ npm test
 ```
 
 The suite contains 15 required test cases covering all major features.
+# trigger
 
 ## Database
 
