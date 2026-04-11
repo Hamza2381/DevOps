@@ -3,15 +3,21 @@ pipeline {
 
     stages {
 
-        stage('Stop Old Container') {
+        stage('Checkout Code') {
             steps {
-                sh 'docker-compose -f docker-compose.part2.yml down || true'
+                checkout scm
             }
         }
 
-        stage('Run Container (Part 2)') {
+        stage('Stop Old Container') {
             steps {
-                sh 'docker-compose -f docker-compose.part2.yml up -d --build'
+                sh 'docker compose -f docker-compose.part2.yml down || true'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh 'docker compose -f docker-compose.part2.yml up -d --build'
             }
         }
     }
