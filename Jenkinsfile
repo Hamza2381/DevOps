@@ -5,8 +5,9 @@ pipeline {
 
         stage('Stop Old Container') {
             steps {
-                sh 'docker stop part2_app || true'
-                sh 'docker rm part2_app || true'
+                sh '''
+                docker rm -f part2_app || true
+                '''
             }
         }
 
@@ -16,7 +17,7 @@ pipeline {
                 docker run -d \
                   --name part2_app \
                   -p 5001:3000 \
-                  -v $(pwd):/app \
+                  -v $WORKSPACE:/app \
                   -w /app \
                   node:18 \
                   sh -c "npm install && npm start"
