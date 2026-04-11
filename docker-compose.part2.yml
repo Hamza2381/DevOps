@@ -6,7 +6,7 @@ services:
     container_name: part2_app
     working_dir: /app
     volumes:
-      - .:/app
+      - ./:/app
     ports:
-      - "5000:4000"
+      - "5001:3000"
     command: sh -c "npm install && npm start"
