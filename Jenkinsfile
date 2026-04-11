@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                checkout scm
+                git 'https://github.com/Hamza2381/DevOps.git'
             }
         }
 
