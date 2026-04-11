@@ -13,6 +13,8 @@ A full-stack Job Portal built with Node.js, Express, SQLite, and EJS.
 
 ## Tech Stack
 
+#trigger for part 2 check
+
 - Node.js
 - Express.js
 - SQLite + Sequelize ORM
