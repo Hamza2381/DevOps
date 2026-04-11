@@ -1,6 +1,7 @@
 # Job Portal Web Application
 
 A full-stack Job Portal built with Node.js, Express, SQLite, and EJS.
+#trigger for part 2 check11
 
 ## Features
 
@@ -13,7 +14,7 @@ A full-stack Job Portal built with Node.js, Express, SQLite, and EJS.
 
 ## Tech Stack
 
-#trigger for part 2 check
+
 
 - Node.js
 - Express.js
