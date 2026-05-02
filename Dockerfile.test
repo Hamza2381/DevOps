@@ -1,0 +1,41 @@
+# Dockerfile.test — Python + Headless Chrome + Selenium
+FROM python:3.11-slim
+
+# Install Chrome dependencies + Chrome itself
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget gnupg ca-certificates \
+    libglib2.0-0 libnss3 libfontconfig1 libx11-6 libx11-xcb1 \
+    libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
+    libxfixes3 libxi6 libxrandr2 libxrender1 libxtst6 \
+    libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 \
+    libdrm2 libgbm1 libasound2 fonts-liberation \
+  && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
+     | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
+  && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] \
+     https://dl.google.com/linux/chrome/deb/ stable main" \
+     > /etc/apt/sources.list.d/google-chrome.list \
+  && apt-get update \
+  && apt-get install -y google-chrome-stable \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV PYTHONUNBUFFERED=1
+ENV WDM_LOG=0
+
+WORKDIR /app
+
+# Install Python packages
+COPY tests/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Pre-download ChromeDriver so tests don't need internet at runtime
+RUN python -c \
+  "from webdriver_manager.chrome import ChromeDriverManager; ChromeDriverManager().install()"
+
+# Copy test files
+COPY tests/ .
+
+# Run tests and save HTML report
+CMD ["pytest", "test_jobportal.py", "-v", \
+     "--html=test-results/report.html", \
+     "--self-contained-html", \
+     "--tb=short"]
